@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SANCHIR POKER</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top,#18251f,#050807 65%);
+    color:white;
+    font-family:Arial, sans-serif;
+    overflow:hidden;
+}
+
+/* HEADER */
+
+header{
+    height:70px;
+    background:#080b0a;
+    border-bottom:1px solid #303b35;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 30px;
+}
+
+.logo{
+    color:#d8b45a;
+    font-size:25px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+
+.balance{
+    background:#111714;
+    border:1px solid #455247;
+    padding:10px 18px;
+    border-radius:12px;
+    color:#ffd968;
+    font-weight:bold;
+}
+
+/* GAME */
+
+.game{
+    height:calc(100vh - 70px);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* TABLE */
+
+.table{
+    position:relative;
+
+    width:min(1000px,94vw);
+    height:600px;
+
+    background:
+        radial-gradient(
+            circle,
+            #176044 0%,
+            #0b3929 70%
+        );
+
+    border:18px solid #171717;
+    border-radius:50%;
+
+    box-shadow:
+        0 0 0 5px #87692f,
+        0 30px 80px rgba(0,0,0,.8);
+}
+
+/* POT */
+
+.pot{
+    position:absolute;
+
+    top:37%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    text-align:center;
+}
+
+.pot-title{
+    color:#999;
+    font-size:12px;
+    letter-spacing:2px;
+}
+
+#pot{
+    color:#ffd966;
+    font-size:30px;
+    font-weight:900;
+}
+
+/* COMMUNITY */
+
+.community{
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    display:flex;
+    gap:9px;
+}
+
+.card{
+    width:64px;
+    height:90px;
+
+    background:#fff;
+    color:#111;
+
+    border-radius:9px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:23px;
+    font-weight:900;
+
+    box-shadow:0 7px 15px rgba(0,0,0,.5);
+}
+
+.red{
+    color:#d51f35;
+}
+
+/* PLAYER */
+
+.player{
+    position:absolute;
+    width:150px;
+    text-align:center;
+}
+
+.name{
+    background:rgba(0,0,0,.85);
+
+    border:1px solid #43564a;
+
+    padding:7px;
+
+    border-radius:8px;
+
+    font-weight:bold;
+}
+
+.stack{
+    color:#e2bd59;
+    margin-top:4px;
+    font-size:14px;
+}
+
+.hand{
+    display:flex;
+    justify-content:center;
+    margin-top:7px;
+}
+
+.mini-card{
+    width:38px;
+    height:53px;
+
+    background:white;
+    color:#111;
+
+    border-radius:5px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:bold;
+
+    margin:0 2px;
+}
+
+.back{
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #172e6d,
+            #172e6d 5px,
+            #2d4ba0 5px,
+            #2d4ba0 10px
+        );
+
+    color:white;
+
+    border:2px solid white;
+}
+
+/* POSITIONS */
+
+.p1{
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.p2{
+    left:10px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.p3{
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.p4{
+    top:25px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+/* STATUS */
+
+.status{
+    position:absolute;
+
+    top:-48px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    color:#ddd;
+
+    white-space:nowrap;
+
+    font-size:14px;
+}
+
+/* BUTTONS */
+
+.controls{
+    position:absolute;
+
+    bottom:-80px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    display:flex;
+    gap:8px;
+}
+
+button{
+    border:none;
+
+    padding:12px 19px;
+
+    border-radius:9px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.15s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.15);
+}
+
+.fold{
+    background:#8d2632;
+    color:white;
+}
+
+.check{
+    background:#356653;
+    color:white;
+}
+
+.raise{
+    background:#d1a033;
+    color:#111;
+}
+
+.new{
+    background:#eee;
+    color:#111;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    header{
+        padding:0 14px;
+    }
+
+    .logo{
+        font-size:18px;
+    }
+
+    .table{
+        height:470px;
+        border-width:12px;
+    }
+
+    .community{
+        gap:4px;
+    }
+
+    .card{
+        width:46px;
+        height:66px;
+        font-size:17px;
+    }
+
+    .player{
+        width:100px;
+    }
+
+    .p2{
+        left:-5px;
+    }
+
+    .p3{
+        right:-5px;
+    }
+
+    .p4{
+        top:10px;
+    }
+
+    .mini-card{
+        width:30px;
+        height:43px;
+        font-size:12px;
+    }
+
+    .controls{
+        bottom:-65px;
+        gap:4px;
+    }
+
+    button{
+        padding:9px 10px;
+        font-size:10px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ♠ SANCHIR POKER
+    </div>
+
+    <div class="balance">
+        🪙
+        <span id="balance">10,000</span>
+    </div>
+
+</header>
+
+
+<div class="game">
+
+<div class="table">
+
+
+    <!-- STATUS -->
+
+    <div
+        class="status"
+        id="status">
+
+        YOUR TURN
+
+    </div>
+
+
+    <!-- POT -->
+
+    <div class="pot">
+
+        <div class="pot-title">
+            POT
+        </div>
+
+        <div id="pot">
+            1,200
+        </div>
+
+    </div>
+
+
+    <!-- COMMUNITY CARDS -->
+
+    <div class="community">
+
+        <div class="card">
+            A♠
+        </div>
+
+        <div class="card red">
+            K♥
+        </div>
+
+        <div class="card">
+            10♣
+        </div>
+
+        <div class="card red">
+            7♦
+        </div>
+
+        <div class="card">
+            2♠
+        </div>
+
+    </div>
+
+
+    <!-- PLAYER LEFT -->
+
+    <div class="player p2">
+
+        <div class="name">
+            MUNKH
+        </div>
+
+        <div class="stack">
+            4,850
+        </div>
+
+        <div class="hand">
+
+            <div class="mini-card back">
+                ★
+            </div>
+
+            <div class="mini-card back">
+                ★
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PLAYER RIGHT -->
+
+    <div class="player p3">
+
+        <div class="name">
+            BOLD
+        </div>
+
+        <div class="stack">
+            6,200
+        </div>
+
+        <div class="hand">
+
+            <div class="mini-card back">
+                ★
+            </div>
+
+            <div class="mini-card back">
+                ★
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PLAYER TOP -->
+
+    <div class="player p4">
+
+        <div class="name">
+            TUGA
+        </div>
+
+        <div class="stack">
+            3,750
+        </div>
+
+        <div class="hand">
+
+            <div class="mini-card back">
+                ★
+            </div>
+
+            <div class="mini-card back">
+                ★
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SANCHIR -->
+
+    <div class="player p1">
+
+        <div class="name">
+            SANCHIR
+        </div>
+
+        <div class="stack">
+
+            🪙
+            <span id="playerStack">
+                10,000
+            </span>
+
+        </div>
+
+
+        <div class="hand">
+
+            <div class="mini-card">
+                A♣
+            </div>
+
+            <div class="mini-card red">
+                J♥
+            </div>
+
+        </div>
+
+
+        <!-- CONTROLS -->
+
+        <div class="controls">
+
+            <button
+                class="fold"
+                onclick="fold()">
+
+                FOLD
+
+            </button>
+
+
+            <button
+                class="check"
+                onclick="check()">
+
+                CHECK
+
+            </button>
+
+
+            <button
+                class="raise"
+                onclick="raiseBet()">
+
+                RAISE 500
+
+            </button>
+
+
+            <button
+                class="new"
+                onclick="newGame()">
+
+                NEW
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* GAME VARIABLES */
+
+let balance = 10000;
+
+let pot = 1200;
+
+let gameOver = false;
+
+
+/* UPDATE */
+
+function update(){
+
+    document.getElementById("balance")
+        .innerText =
+        balance.toLocaleString();
+
+
+    document.getElementById("playerStack")
+        .innerText =
+        balance.toLocaleString();
+
+
+    document.getElementById("pot")
+        .innerText =
+        pot.toLocaleString();
+
+}
+
+
+/* STATUS */
+
+function setStatus(text,color){
+
+    const status =
+        document.getElementById("status");
+
+    status.innerText = text;
+
+    status.style.color = color;
+
+}
+
+
+/* FOLD */
+
+function fold(){
+
+    if(gameOver) return;
+
+    gameOver = true;
+
+    setStatus(
+        "YOU FOLDED",
+        "#ff6672"
+    );
+
+}
+
+
+/* CHECK */
+
+function check(){
+
+    if(gameOver) return;
+
+    setStatus(
+        "CHECK — OPPONENT THINKING...",
+        "#9ee6c4"
+    );
+
+}
+
+
+/* RAISE */
+
+function raiseBet(){
+
+    if(gameOver) return;
+
+    const amount = 500;
+
+
+    if(balance < amount){
+
+        setStatus(
+            "NOT ENOUGH CHIPS",
+            "#ff6672"
+        );
+
+        return;
+
+    }
+
+
+    balance -= amount;
+
+    pot += amount;
+
+
+    setStatus(
+        "SANCHIR RAISES 500",
+        "#ffd866"
+    );
+
+
+    update();
+
+}
+
+
+/* NEW GAME */
+
+function newGame(){
+
+    balance = 10000;
+
+    pot = 1200;
+
+    gameOver = false;
+
+
+    setStatus(
+        "NEW HAND — YOUR TURN",
+        "#ffffff"
+    );
+
+
+    update();
+
+}
+
+
+/* START */
+
+update();
+
+</script>
+
+</body>
+</html>
